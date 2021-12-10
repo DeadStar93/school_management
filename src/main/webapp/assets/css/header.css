@@ -49,4 +49,4 @@ main {
 
 .main_menu i {display: inline-block; width: 30px;}
 
-.main_menu a.active {color: #fff; border-color: #333;}
+.main_menu a.active {color: #fff; background-color: #333;}
