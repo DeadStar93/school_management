@@ -44,6 +44,5 @@ public class DashboardService {
         resultMap.put("subject", subjectCntList);
 
         return resultMap;
-
     }
 }
