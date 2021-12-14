@@ -7,6 +7,12 @@ main {
     width:calc(100% - 250px); margin-left: 250px;
     box-sizing: border-box; padding: 35px;
 }
+
+.menu_wrap {
+    width: 95%; height: 10%; position: absolute; bottom: 795px; ;
+    padding: 20px; background-color: whitesmoke;  border-radius: 10px;
+    }
+    
 .main_menu a {
     display: block;
     color: #333;
