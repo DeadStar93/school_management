@@ -17,19 +17,19 @@ public class DepartmentService {
     DepartmentMapper mapper;
 
     public Map<String, Object> getDepartmentList(Integer offset, String keyword) {
-        Map<String, Object> resutlMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         
         if(offset == null) {
             offset = 0;
-            resutlMap.put("offset", offset);
+            resultMap.put("offset", offset);
         }
 
         if(keyword == null) {
             keyword = "%%";
-            resutlMap.put("keyword",  "");
+            resultMap.put("keyword",  "");
         }
         else {
-            resutlMap.put("keyword", keyword);
+            resultMap.put("keyword", keyword);
             keyword = "%"+keyword+"%";
 
         }
@@ -43,30 +43,30 @@ public class DepartmentService {
 
         Integer page_cnt = cnt / 10 + (cnt%10 > 0? 1:0);
 
-        resutlMap.put("status", true);
-        resutlMap.put("total", cnt);
-        resutlMap.put("pageCnt", page_cnt);
-        resutlMap.put("list", list);
-        return resutlMap;
+        resultMap.put("status", true);
+        resultMap.put("total", cnt);
+        resultMap.put("pageCnt", page_cnt);
+        resultMap.put("list", list);
+        return resultMap;
     }
 
     public Map<String, Object> addDepartment(DepartmentVO data) {
-        Map<String, Object> resutlMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         if(data.getDi_name() == null || data.getDi_name().equals("")) {
-            resutlMap.put("status", false);
-            resutlMap.put("message", "학과명을 입력하세요.");
-            return resutlMap;
+            resultMap.put("status", false);
+            resultMap.put("message", "학과명을 입력하세요.");
+            return resultMap;
         }
         
         if(data.getDi_graduate_score() == null || data.getDi_graduate_score() == 0) {
-            resutlMap.put("status", false);
-            resutlMap.put("message", "졸업 학점을 입력하세요.");
-            return resutlMap;
+            resultMap.put("status", false);
+            resultMap.put("message", "졸업 학점을 입력하세요.");
+            return resultMap;
         }
         
         mapper.AddDepartment(data);
-        resutlMap.put("status", true);
-        resutlMap.put("message", "학과가 추가되었습니다.");
+        resultMap.put("status", true);
+        resultMap.put("message", "학과가 추가되었습니다.");
 
         Integer seq =mapper.selectLatestDataSeq();
         // 히스토리(백업을 위한 자료)(db history로 기록됨)
@@ -77,14 +77,14 @@ public class DepartmentService {
         history.setDeph_content(content);
         mapper.insertDepartmentHistory(history);
 
-        return resutlMap;
+        return resultMap;
     }
 
     public Map<String, Object> deleteDepartment(Integer seq) {
-        Map<String, Object> resutlMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         mapper.DeleteDepartment(seq);
-        resutlMap.put("status", true);
-        resutlMap.put("message", "학과가 삭제되었습니다.");
+        resultMap.put("status", true);
+        resultMap.put("message", "학과가 삭제되었습니다.");
 
         DepartmentHistoryVO history = new DepartmentHistoryVO();
         history.setDeph_di_seq(seq);
@@ -93,24 +93,24 @@ public class DepartmentService {
         // history.setDeph_content(content);
         mapper.insertDepartmentHistory(history);
 
-        return resutlMap;
+        return resultMap;
     }
 
     public Map<String, Object> getDepartmentInfoBySeq(Integer seq) {
         
-        Map<String, Object> resutlMap = new LinkedHashMap<String, Object>();
-        resutlMap.put("status", true);
-        resutlMap.put("data", mapper.getDepartmentInfoBySeq(seq));
-        return resutlMap;
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap.put("status", true);
+        resultMap.put("data", mapper.getDepartmentInfoBySeq(seq));
+        return resultMap;
     }
 
     public Map<String, Object> updateDepartmentInfo(DepartmentVO data) {
-        Map<String, Object> resutlMap = new LinkedHashMap<String, Object>();
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         
         mapper.updateDepartment(data);
         
-        resutlMap.put("status", true);
-        resutlMap.put("message", "수정되었습니다.");
+        resultMap.put("status", true);
+        resultMap.put("message", "수정되었습니다.");
 
         DepartmentHistoryVO history = new DepartmentHistoryVO();
         history.setDeph_di_seq(data.getDi_seq());
@@ -119,6 +119,18 @@ public class DepartmentService {
         history.setDeph_content(content);
         mapper.insertDepartmentHistory(history);
 
-        return resutlMap;
+        return resultMap;
+    }
+    public Map<String, Object> getDepartmentByKeyword(String keyword) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+
+        if(keyword == null) keyword = "%%";
+        keyword = "%"+keyword+"%";
+        
+        List<DepartmentVO> list = mapper.getDepartmentByKeyword(keyword);
+
+        resultMap.put("status", true);
+        resultMap.put("list", list);
+        return resultMap;
     }
 }

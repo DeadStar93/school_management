@@ -1,6 +1,11 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,7 +108,7 @@
             <div class="btn_area">
                     <button id="add_dep">등록하기</button>
                     <button id="modify_dep">수정하기</button>
-                    <button id="cancle_dep">취소하기</button>
+                    <button id="cancel_dep">취소하기</button>
             </div>
         </div>
     </div>

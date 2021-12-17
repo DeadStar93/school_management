@@ -38,7 +38,7 @@ $(function() {
     });
 
     // 취소
-    $("#cancle_dep").click(function(){
+    $("#cancel_dep").click(function(){
         if(confirm("취소하시겠습니까?\n(입력된 정보는 저장되지 않습니다.)") == false) return;
         $("#dep_name").val("");
         $("#dep_score").val("");
