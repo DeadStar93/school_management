@@ -50,7 +50,7 @@ $(function(){
             }
         })
     })
-
+    // 등록
     $("#add_dep").click(function(){
         let teacher_dep_name =  $("#teacher_dep_name").attr("data-dep-seq");
         let teacher_name =  $("#teacher_name").val();
@@ -99,18 +99,21 @@ $(function(){
             }
         })
     })
-
+    // 등록 팝업창
     $("#add_department").click(function(){
         $(".popup_wrap").css("display", "block");
+        $("#add_dep").css("display", "inline-block");
         $("#modify_dep").css("display", "none");
         $("#cancel_dep").css("display", "inline-block");
         $(".popup .top_area h2").html("교직원 추가")
         $(".popup .top_area p").html("교직원 정보를 입력해주세요.")
     })
 
+    // 취소
     $("#cancel_dep").click(function(){
         if(confirm("취소하시겠습니까?\n(입력된 내용은 저장되지 않습니다.") ==false) return;
-        $("#teacher_dep_name").attr("data-dep-seq","");
+        $("#teacher_dep_name").attr("data-dep-seq",26); //학과 번호
+        $("#teacher_dep_name").val("자율전공");         //학과 이름
         $("#teacher_name").val("");
         $("#teacher_number").val("");
         $("#teacher_pwd").val("");
@@ -122,11 +125,90 @@ $(function(){
 
         $(".popup_wrap").css("display", "")
     })
-    
+
+    // 학과 검색
     $("#search_btn").click(function(){
         let type = $("#search_type option:selected").val();
         let keyword = $("#keyword").val();
         location.href = "/teacher?type="+type+"&keyword="+keyword;
     })
 
+    //  삭제
+    $(".delete_btn").click(function(){
+        if(!confirm("교직원 정보를 삭제하시겠습니까?\n(이 작업은 되돌릴 수 없습니다.)")) return;
+        let seq = $(this).attr("data-seq");
+
+        $.ajax({
+            url:"/teacher/delete?seq="+seq,
+            type:"delete",
+            success:function(result) {
+                // 100~ 300번대
+                alert(result.message);
+                location.reload();
+            },
+            error:function(result) {
+                // 400~500번대
+                console.log(result)
+                alert(r.responseJSON.message)
+            }
+        })
+    })
+
+    // 수정값 조회
+    let modify_seq = 0;
+    $(".modify_btn").click(function(){
+        let seq = $(this).attr("data-seq");
+        modify_seq= seq;
+        $.ajax({
+            type:"get",
+            url:"/teacher/get?seq="+seq,
+            success:function(result) {
+                console.log(result);
+                $(".popup_wrap").css("display", "block");
+                $("#add_dep").css("display", "none");
+                $("#modify_dep").css("display", "inline-block");
+                $("#cancel_dep").css("display", "inline-block");
+                $(".popup .top_area h2").html("교직원 수정")
+                $(".popup .top_area p").html("수정할 교직원 정보를 입력해주세요.")
+                
+                // 초기화  (map(department의 수정 형식에서 data)사용안하고 VO를 통해 바로 내보내는 경우)
+                $("#teacher_dep_name").attr("data-dep-seq", result.ti_di_seq);  // 학과 번호
+                $("#teacher_dep_name").val(result.department_name);             // 학과 이름
+                $("#teacher_name").val(result.ti_name);
+                $("#teacher_number").val(result.ti_number);
+                $("#teacher_pwd").val("**********").prop("disabled", true);
+                $("#teacher_pwd_confirm").val("*********").prop("disabled", true);
+                $("#teacher_birth").val(result.ti_birth);
+                $("#teacher_phone").val(result.ti_phone_num);
+                $("#teacher_email").val(result.ti_email);
+                $("#teacher_status").val(result.ti_status).prop("selected", true);
+            }
+        })
+    })
+
+    $("#modify_dep").click(function(){
+        if(confirm("수정하시겠습니까?") == false) return;
+        
+        let data = {
+            ti_seq:modify_seq,
+            ti_di_seq:$("#teacher_dep_name").attr("data-dep-seq"),
+            ti_name:$("#teacher_name").val(),
+            ti_number:$("#teacher_number").val(),
+            ti_birth: $("#teacher_birth").val(),
+            ti_phone_num:$("#teacher_phone").val(),
+            ti_email:$("#teacher_email").val(),
+            ti_status:$("#teacher_status option:selected").val()
+        }
+
+        $.ajax({
+            url:"/teacher/update",
+            type:"patch",
+            data:JSON.stringify(data),
+            contentType:"application/json",
+            success:function(result) {
+                alert(result.message);
+                    location.reload();
+            }
+        })
+    })
 })

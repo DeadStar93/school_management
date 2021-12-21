@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("Pragma", "no-cache");
@@ -42,7 +43,7 @@
                         <tr>
                             <th>번호</th>
                             <th>소속</th>
-                            <th>교직원</th>
+                            <th>교직원번호</th>
                             <th>이름</th>
                             <th>생년월일</th>
                             <th>전화번호</th>
@@ -59,50 +60,37 @@
                                     <td id="nodata" colspan="11">데이터가 없습니다.</td>
                                 </tr>
                             </c:if>
-                            <c:forEach items="${data.list}" var="t">
+                            <c:forEach items="${data.list}" var="teacher">
                                 <tr>
-                                    <td>${t.ti_seq}</td>
-                                    <td>${t.department_name}</td>
-                                    <td>${t.ti_number}</td>
-                                    <td>${t.ti_name}</td>
-                                    <td>${t.ti_birth}</td>
-                                    <td>${t.ti_phone_num}</td>
-                                    <td>${t.ti_email}</td>
+                                    <td>${teacher.ti_seq}</td>
+                                    <td>${teacher.department_name}</td>
+                                    <td>${teacher.ti_number}</td>
+                                    <td>${teacher.ti_name}</td>
+                                    <td>${teacher.ti_birth}</td>
+                                    <td>${teacher.ti_phone_num}</td>
+                                    <td>${teacher.ti_email}</td>
                                     <td class="teacher_status">
-                                        <c:if test="${t.ti_status == 1}">
+                                        <c:if test="${teacher.ti_status == 1}">
                                             <span style="background-color: rgb(17,226,27);">정상</span>
                                         </c:if>
-                                        <c:if test="${t.ti_status == 2}">
+                                        <c:if test="${teacher.ti_status == 2}">
                                             <span style="background-color: rgb(255,110,26);">휴직</span>
                                         </c:if>
-                                        <c:if test="$${t.ti_status == 3}">
+                                        <c:if test="${teacher.ti_status == 3}">
                                             <span style="background-color: rgb(251,186, 64);">휴가</span>
                                         </c:if>
-                                        <c:if test="${t.ti_status == 4}">
+                                        <c:if test="${teacher.ti_status == 4}">
                                             <span style="background-color: rgb(255, 23, 23);">퇴임</span>
                                         </c:if>
                                     </td>
-                                    <td>${t.ti_reg_dt}</td>
-                                    <td>${t.ti_mod_dt}</td>
+                                    <td><fmt:formatDate value="${teacher.ti_reg_dt}" pattern="yyyy년 MM월 dd일 (EE) HH시 mm분 ss초"></fmt:formatDate></td>
+                                    <td><fmt:formatDate value="${teacher.ti_mod_dt}" pattern="yyyy년 MM월 dd일 (EE) HH시 mm분 ss초"></fmt:formatDate></td>
                                     <td>
-                                        <button class="modify_btn" data-seq="${data.di_seq}"><i class="fas fa-pencil-alt"></i></button>
-                                        <button class="delete_btn" data-seq="${data.di_seq}"><i class="fas fa-user-minus"></i></button>
+                                        <button class="modify_btn" data-seq="${teacher.ti_seq}"><i class="fas fa-pencil-alt"></i></button>
+                                        <button class="delete_btn" data-seq="${teacher.ti_seq}"><i class="fas fa-user-minus"></i></button>
                                     </td>
                                 </tr>
                             </c:forEach>
-                            <!--  
-                        <tr>
-                            <td>1234</td>
-                            <td>컴퓨터공학과</td>
-                            <td>120</td>
-                            <td>2021-12-10 11:11:00</td>
-                            <td>2021-12-10 11:11:10</td>
-                            <td>
-                                <button class="modify_btn"><i class="fas fa-pencil-alt"></i></button>
-                                <button class="delete_btn"><i class="fas fa-user-minus"></i></button>
-                            </td>
-                        </tr>
-                        -->
                     </tbody>
                 </table>
             </div>
@@ -127,7 +115,7 @@
                 <p>교직원 정보를 입력해 주세요.</p>
             </div>
             <div class="content_area">
-                <input type="text" id="teacher_dep_name" placeholder="학과 명" disabled>
+                <input type="text" id="teacher_dep_name" placeholder="학과 명" disabled>학과
                 <button id="search_dep">학과 검색</button>
                 <br>
                 <input type="text" id="teacher_name" placeholder="교직원명">
@@ -141,7 +129,7 @@
                     <option value="1">재직</option>
                     <option value="2">휴직</option>
                     <option value="3">휴가</option>
-                    <option value="3">퇴임</option>
+                    <option value="4">퇴임</option>
                 </select>
             </div>
             <div class="btn_area">
@@ -153,7 +141,7 @@
     </div>
     <div class="department_search">
         <div class="dep_search_box">
-            <input type="text" id="dep_keyword" placeholder="예) 컴퓨터공학, 공학">
+            <input type="text" id="dep_keyword" placeholder="예) 학과, 컴퓨터공학, 공학">
             <button id="dep_search_btn"><i class="fas fa-search"></i></button>
         </div>
         <div class="search_result">

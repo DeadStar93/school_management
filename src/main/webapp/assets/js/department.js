@@ -50,12 +50,11 @@ $(function() {
 // 삭제
     $(".delete_btn").click(function(){
         if(confirm("학과를 삭제하시겠습니까?\n(이 동작은 되돌릴 수 업습니다.)") == false) return;
-        alert($(this).attr("data-seq"))
         let seq = $(this).attr("data-seq");
 
         $.ajax({
-            type:"delete",
             url:"/department/delete?seq="+seq,
+            type:"delete",
             success:function(result) {
                 alert(result.message);
                 location.reload();
@@ -83,7 +82,7 @@ $(function() {
                 $("#dep_score").val(result.data.di_graduate_score);
                 $("#dep_status").val(result.data.di_status).prop("selected",true);
             }
-        })
+        })  
     })
 
     // 수정하기

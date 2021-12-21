@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("Pragma", "no-cache");
@@ -52,8 +53,8 @@
                                 <td>${data.di_seq}</td>
                                 <td>${data.di_name}</td>
                                 <td>${data.di_graduate_score}</td>
-                                <td>${data.di_reg_dt}</td>
-                                <td>${data.di_mod_dt}</td>
+                                <td><fmt:formatDate value="${data.di_reg_dt}" pattern="yyyy년 MM월 dd일 (EE) a hh시 mm분 ss초"></fmt:formatDate></td>
+                                <td><fmt:formatDate value="${data.di_mod_dt}" pattern="yyyy년 MM월 dd일 (EE) a hh시 mm분 ss초"></fmt:formatDate></td>
                                 <td>
                                     <button class="modify_btn" data-seq="${data.di_seq}"><i class="fas fa-pencil-alt"></i></button>
                                     <button class="delete_btn" data-seq="${data.di_seq}"><i class="fas fa-user-minus"></i></button>
