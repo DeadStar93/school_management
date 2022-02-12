@@ -12,35 +12,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/department")
 public class DepartmentAPIController {
     @Autowired
     DepartmentService service;
     
-    @PostMapping("/department/add")
+    @PostMapping("/add")
     public Map<String, Object> postDepartmentAdd(@RequestBody DepartmentVO data) {
         return service.addDepartment(data);
     } 
 
-    @DeleteMapping("/department/delete")
+    @DeleteMapping("/delete")
     public Map<String, Object> deleteDepartment(@RequestParam Integer seq) {
         return service.deleteDepartment(seq);
     }
 
-    @GetMapping("/department/get")
+    @GetMapping("/get")
     public Map<String, Object> getDepartmentInfoBySeq(@RequestParam Integer seq) {
         return service.getDepartmentInfoBySeq(seq);
     }
 
-    @PatchMapping("/department/update")
+    @PatchMapping("/update")
     public Map<String, Object> patchDepartmentInfo(@RequestBody DepartmentVO data) {
         return service.updateDepartmentInfo(data);
     }
 
-    @GetMapping("/department/keyword")
+    @GetMapping("/keyword")
     public Map<String, Object> getDepartmentByKeyword(@RequestParam @Nullable String keyword) {
         return service.getDepartmentByKeyword(keyword);
     }

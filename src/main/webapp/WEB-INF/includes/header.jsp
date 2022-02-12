@@ -1,11 +1,17 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="/assets/plugins/jquery-3.4.1.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Yeon+Sung&display=swap" rel="stylesheet">
@@ -28,7 +34,7 @@
                 <a href="/"><i class="fas fa-columns"></i>대시보드</a>
                 <a href="/department"><i class="fas fa-school"></i>학과 관리</a>
                 <a href="/teacher"><i class="fas fa-user-tie"></i>교직원 관리</a>
-                <a href="#"><i class="fas fa-user-graduate"></i>학생 관리</a>
+                <a href="/student"><i class="fas fa-user-graduate"></i>학생 관리</a>
                 <a href="#"><i class="fas fa-chalkboard-teacher"></i>수업 관리</a>
             </div>
         </div>

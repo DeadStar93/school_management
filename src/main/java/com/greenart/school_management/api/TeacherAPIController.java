@@ -12,32 +12,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/teacher")
 public class TeacherAPIController {
     @Autowired TeacherService service;
 
-    @PostMapping("/teacher/add") // 생성
+    @PostMapping("/add") // 생성
     public Map<String, Object> postTeacherAdd(@RequestBody TeacherVO data) throws Exception {
 
         return service.addTeacherInfo(data);
     }
 
-    @DeleteMapping("/teacher/delete")  //   삭제
+    @DeleteMapping("/delete")  //   삭제
     public ResponseEntity<Map<String, Object>> deleteTeacherInfo(@RequestParam Integer seq) {
 
         return service.deleteTeacherList(seq);
     }
 
-    @GetMapping("/teacher/get") // 수정값 조회
+    @GetMapping("/get") // 수정값 조회
     public TeacherVO getTeacherBySeq(@RequestParam Integer seq) {
     
         return service.getTeacherListBySeq(seq);
     }
 
-    @PatchMapping("/teacher/update")    // 수정
+    @PatchMapping("/update")    // 수정
     public Map<String, Object> updateTeacherInfo(@RequestBody TeacherVO data) {
 
         return service.updateTeacherList(data);

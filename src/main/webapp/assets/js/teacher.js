@@ -63,7 +63,7 @@ $(function(){
 
         let teacher_pwd_confirm = $("#teacher_pwd_confirm").val();
 
-        if(teacher_dep_name == undefined) {
+        if(teacher_dep_name == undefined ) {
             alert("학과를 입력해 주세요.");
             return;
         }
@@ -112,8 +112,8 @@ $(function(){
     // 취소
     $("#cancel_dep").click(function(){
         if(confirm("취소하시겠습니까?\n(입력된 내용은 저장되지 않습니다.") ==false) return;
-        $("#teacher_dep_name").attr("data-dep-seq",26); //학과 번호
-        $("#teacher_dep_name").val("자율전공");         //학과 이름
+        $("#teacher_dep_name").attr("data-dep-seq",""); //학과 번호
+        $("#teacher_dep_name").val("학과 명");         //학과 이름
         $("#teacher_name").val("");
         $("#teacher_number").val("");
         $("#teacher_pwd").val("");
@@ -121,7 +121,7 @@ $(function(){
         $("#teacher_birth").val("");
         $("#teacher_phone").val("");
         $("#teacher_email").val("");
-        $("#teacher_status option:selected").val("selected", true);
+        $("#teacher_status").val(1).prop("selected", true);
 
         $(".popup_wrap").css("display", "")
     })

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.greenart.school_management.mapper.StudentMapper">
+    <select id="getStudentList" resultType="com.greenart.school_management.data.StudentVO">
+        select 
+            si_seq, department_name, si_number, si_name, si_reg_dt, si_mod_dt, si_status, si_phone_num, si_email, si_birth 
+        from 
+            (
+                SELECT 
+                    a.*, b.di_name as department_name 
+                FROM 
+                    student_info a inner join department_info b 
+                on 
+                    a.si_di_seq = b.di_seq
+            ) c
+            <if test="type == 'dept'">
+                where department_name like #{keyword}
+            </if>
+            <if test="type == 'name'">
+                where si_name like #{keyword}
+            </if>
+            order by si_seq desc
+            limit 10 offset #{offset}
+    </select>
+    <select id="getStudentCnt" resultType="java.lang.Integer">
+        select 
+            count(*)
+        from 
+            (
+                SELECT 
+                    a.*, b.di_name as department_name 
+                FROM 
+                    student_info a inner join department_info b 
+                on 
+                    a.si_di_seq = b.di_seq
+            ) c
+            <if test="type == 'dept'">
+                where department_name like #{keyword}
+            </if>
+            <if test="type == 'name'">
+                where si_name like #{keyword}
+            </if>
+    </select>
+
+    <insert id="insertStudentInfo">
+        INSERT INTO school_work_db.student_info
+            (si_di_seq,  si_name, si_number, si_pwd, si_birth, si_phone_num, si_email,  si_status)
+        VALUES
+            (#{si_di_seq}, #{si_name}, #{si_number}, #{si_pwd}, #{si_birth}, #{si_phone_num}, #{si_email}, #{si_status});
+    </insert>
+
+</mapper>

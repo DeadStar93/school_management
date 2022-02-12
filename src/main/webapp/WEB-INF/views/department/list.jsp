@@ -1,7 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("Pragma", "no-cache");
@@ -78,7 +76,7 @@
                 </table>
             </div>
             <div class="pager_area">
-                <button id="#prev"><i class="fas fa-arrow-left"></i></button>
+                <button id="prev"><i class="fas fa-arrow-left"></i></button>
                 <div class="pagers">
                     <c:forEach begin="1" end="${data.pageCnt}" var="i">
                         <a href="/department?offset=${(i-1)*10}&keyword=${data.keyword}">${i}</a>
