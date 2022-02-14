@@ -1,7 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-    <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
     <%
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("Pragma", "no-cache");
@@ -9,12 +7,12 @@
 %>
 <!DOCTYPE html>
 <html>
-    <%@include file="/WEB-INF/includes/header.jsp"%>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <%@include file="/WEB-INF/includes/header.jsp"%>
     <link rel="stylesheet" href="/assets/css/department_list.css">
     <link rel="stylesheet" href="/assets/css/student_list.css">
     <script src="/assets/js/student.js"></script>  
@@ -53,28 +51,50 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>번호</td>
-                            <td>소속</td>
-                            <td>학생 번호</td>
-                            <td>이름</td>
-                            <td>생년월일</td>
-                            <td>전화번호</td>
-                            <td>이메일</td>
-                            <td>상태</td>
-                            <td>등록일</td>
-                            <td>수정일</td>
-                            <td>
-                                <button class="modify_btn"><i class="fas fa-pencil-alt"></i></button>
-                                <button class="delete_btn"><i class="fas fa-user-minus"></i></button>
-                            </td>
-                        </tr>
+                        <c:forEach items="${data.list}" var="student">
+                            <tr>
+                                <td>${student.si_seq}</td>
+                                <td>${student.department_name}</td>
+                                <td>${student.si_number}</td>
+                                <td>${student.si_name}</td>
+                                <td>${student.si_birth}</td>
+                                <td>${student.si_phone_num}</td>
+                                <td>${student.si_email}</td>
+                                <td class="student_status">
+                                    <c:if test="${student.si_status == 1}">
+                                        <span style="background-color: rgb(17,226,27);">정상</span>
+                                    </c:if>
+                                    <c:if test="${student.si_status == 2}">
+                                        <span style="background-color: rgb(255,110,26);">졸업</span>
+                                    </c:if>
+                                    <c:if test="${student.si_status == 3}">
+                                        <span style="background-color: rgb(251,186, 64);">휴학</span>
+                                    </c:if>
+                                    <c:if test="${student.si_status == 4}">
+                                        <span style="background-color: rgb(255, 23, 23);">퇴학</span>
+                                    </c:if>
+                                    <c:if test="${student.si_status == 5}">
+                                        <span style="background-color: rgb(14, 173, 221);">수료</span>
+                                    </c:if>
+                                </td>
+                                <td><fmt:formatDate value="${student.si_reg_dt}" pattern="yyyy년 MM월 dd일 (EE) HH시 mm분 ss초"/></td>
+                                <td><fmt:formatDate value="${student.si_mod_dt}" pattern="yyyy년 MM월 dd일 (EE) HH시 mm분 ss초"/></td>
+                                <td>
+                                    <button class="modify_btn" data-seq="${student.si_seq}"><i class="fas fa-pencil-alt"></i></button>
+                                    <button class="delete_btn" data-seq="${student.si_seq}"><i class="fas fa-user-minus"></i></button>
+                                </td>
+                            </tr>
+                        </c:forEach>
                     </tbody>
                 </table>
             </div>
             <div class="pager_area">
                 <button><i class="fas fa-arrow-left"></i></button>
-                <div class="pagers"></div>
+                <div class="pagers">
+                    <c:forEach begin="1" end="${data.page}" var="i">
+                        <a href="/student?offset=${(i-1)*10}&type=${type}&keyword=${keyword}">${i}</a>  
+                    </c:forEach>
+                </div>
                 <button><i class="fas fa-arrow-right"></i></button>
             </div>
         </div>

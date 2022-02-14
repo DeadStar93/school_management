@@ -14,8 +14,10 @@ public interface StudentMapper {
     public void insertStudentInfo(StudentVO data);
     
     public void deleteStudentInfo(Integer seq);
-
+    public Integer isExistStudent(Integer seq);
 
     public void updateStudentInfo(StudentVO data);
+    public StudentVO getStudentBySeq(Integer seq);
     
+
 }

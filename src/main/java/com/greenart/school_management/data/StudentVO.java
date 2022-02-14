@@ -17,4 +17,6 @@ public class StudentVO {
     private String si_phone_num;
     private String si_email;
     private String si_birth;
+
+    private String department_name;
 }

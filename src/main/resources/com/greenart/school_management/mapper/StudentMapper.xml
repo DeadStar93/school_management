@@ -50,5 +50,25 @@
         VALUES
             (#{si_di_seq}, #{si_name}, #{si_number}, #{si_pwd}, #{si_birth}, #{si_phone_num}, #{si_email}, #{si_status});
     </insert>
-
+    <select id="getStudentBySeq" resultType="com.greenart.school_management.data.StudentVO">
+        SELECT 
+            si_seq, si_di_seq, si_number, si_name, si_pwd, si_birth, si_phone_num, si_email,  si_status, di_name as department_name 
+        FROM 
+            student_info a inner join department_info b 
+        on 
+            a.si_di_seq = b.di_seq
+        where 
+            si_seq = #{seq}
+    </select>
+    <update id="updateStudentInfo">
+        UPDATE student_info
+        SET si_di_seq = #{si_di_seq}, si_number = #{si_number}, si_pwd = #{si_pwd}, si_name = #{si_name},  si_birth = #{si_birth}, si_phone_num=#{si_phone_num}, si_email=#{si_email}, si_status = #{si_status}, si_mod_dt = now()
+        WHERE si_seq = #{si_seq};
+    </update>
+    <delete id="deleteStudentInfo">
+        DELETE FROM student_info WHERE si_seq = #{seq};
+    </delete>
+    <select id="isExistStudent" resultType="java.lang.Integer">
+        select count(*) from student_info where si_seq = #{seq}
+    </select>
 </mapper>

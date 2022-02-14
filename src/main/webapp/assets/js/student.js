@@ -98,7 +98,6 @@ $(function(){
         $("#cancel").css("display", "inline-block");
         $(".top_area h2").html("학생 추가")
         $(".top_area p").html("학생 정보를 입력해 주세요.");
-        
     })
 
     $("#cancel").click(function(){
@@ -113,5 +112,84 @@ $(function(){
         $("#student_status").val(1).prop("selected", true);
 
         $(".popup_wrap").css("display", "none");
+    })
+
+    $("#search_btn").click(function(){
+        let type = $("#search_type option:selected").val();
+        let keyword = $("#keyword").val()
+        location.href="/student?type="+type+"&keyword="+keyword;
+    })
+    $("#keyword").keyup(function(event){
+        if(event.keyCode == 13) $("#search_btn").trigger("click");
+    })
+
+    let modify_seq = 0;
+    $(".modify_btn").click(function(){
+        let seq = $(this).attr("data-seq");
+        modify_seq = seq;
+        $.ajax({
+            url:"/student/get?seq="+seq,
+            type:"get",
+            success:function(data){
+                $(".popup_wrap").css("display", "block");
+                $("#save").css("display", "none");
+                $("#update").css("display", "inline-block");
+                $("#cancel").css("display", "inline-block");
+                $(".top_area h2").html("학생 정보 수정")
+                $(".top_area p").html("학생 정보를 입력해 주세요.");
+
+                $("#student_dep_name").attr("data-dep-seq",data.si_di_seq),
+                $("#student_dep_name").val(data.department_name),
+                $("#student_name").val(data.si_name),
+                $("#student_number").val(data.si_number),
+                $("#student_pwd").val("*************").prop("disabled", true),
+                $("#student_pwd_confirm").val("*************").prop("disabled", true),
+                $("#student_birth").val(data.si_birth),
+                $("#student_phone_num").val(data.si_phone_num),
+                $("#student_email").val(data.si_email),
+                $("#student_status").val(data.si_status).prop("selected", true);
+                console.log(data);
+            }
+        })
+    })
+
+    $("#update").click(function(){
+        if(confirm("학생 정보를 수정하시겠습니까?\n 이 행동은 되돌릴 수 없습니다.") == false) return;
+        let data = {
+            si_seq:modify_seq,
+            si_di_seq:$("#student_dep_name").attr("data-dep-seq"),
+            si_name:$("#student_name").val(),
+            si_number:$("#student_number").val(),
+            si_pwd:$("#student_pwd").val(),
+            si_birth:$("#student_birth").val(),
+            si_phone_num:$("#student_phone_num").val(),
+            si_email:$("#student_email").val(),
+            si_status:$("#student_status option:selected").val()
+        }
+        $.ajax({
+            url:"/student/update",
+            type:"patch",
+            data:JSON.stringify(data),
+            contentType:"application/json",
+            success:function(result){
+                alert(result.message);
+                if(result.status)
+                location.reload();
+            }
+        })
+    })
+            
+    $(".delete_btn").click(function(){
+        if(confirm("학생 정보를 삭제하시겠습니까?\n 이 행동은 되돌릴 수 없습니다.")== false) return;
+        let seq = $(this).attr("data-seq");
+        $.ajax({
+            url:"/student/delete?seq="+seq,
+            type:"delete",
+            success:function(result){
+                alert(result.message);
+                if(result.status)
+                location.reload();
+            }
+        })
     })
 })

@@ -1,6 +1,7 @@
 package com.greenart.school_management.service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.greenart.school_management.data.StudentVO;
@@ -60,4 +61,55 @@ public class StudentService {
 
         return resultMap;
     }
+
+    public Map<String, Object> getStudentList(String keyword, String type, Integer offset) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        if(keyword == null) {
+            resultMap.put("keyword", keyword);
+            keyword = "%%";
+        }
+        else{
+            resultMap.put("keyword", keyword);
+            keyword = "%"+keyword+"%";
+        }
+        resultMap.put("type", type);
+        if(offset == null) offset=0;
+
+        List<StudentVO> list = mapper.getStudentList(type, keyword, offset);
+        Integer cnt = mapper.getStudentCnt(type, keyword);
+        Integer page = (cnt / 10)+ (cnt % 10 > 0 ? 1 : 0);
+        resultMap.put("status", true);
+        resultMap.put("page", page);
+        resultMap.put("list", list);
+            
+        return resultMap;
+    }
+
+    public StudentVO getStudentBySeq(Integer seq) {
+        return mapper.getStudentBySeq(seq);
+    }
+    public Map<String, Object> updateStudenet(StudentVO data) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        mapper.updateStudentInfo(data);
+
+        resultMap.put("status", true);
+        resultMap.put("message", "학생 정보가 수정되었습니다.");
+
+        return resultMap;
+    }
+    public Map<String, Object> deleteStudent(Integer seq) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        if(mapper.isExistStudent(seq) == 0) {
+            resultMap.put("status", false);
+            resultMap.put("message", "존재하지 않는 학생 정보입니다.");
+            return resultMap;
+        }
+        else {
+            mapper.deleteStudentInfo(seq);
+            resultMap.put("status", true);
+            resultMap.put("message", "학생 정보가 삭제되었습니다.");
+            return resultMap;
+        }
+    }
+
 }
