@@ -71,4 +71,13 @@
     <select id="isExistStudent" resultType="java.lang.Integer">
         select count(*) from student_info where si_seq = #{seq}
     </select>
+    <insert id="insertStudentHistory">
+        INSERT INTO school_work_db.student_info_history
+            (sih_si_seq, sih_type, sih_si_content)
+        VALUES
+            (#{sih_si_seq}, #{sih_type}, #{sih_si_content});
+    </insert>
+    <select id="getRecnetAddedStudentSeq" resultType="java.lang.Integer">
+        select si_seq from student_info order by si_seq desc limit 1
+    </select>
 </mapper>

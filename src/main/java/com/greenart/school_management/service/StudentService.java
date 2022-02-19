@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.greenart.school_management.data.StudentHistoryVO;
 import com.greenart.school_management.data.StudentVO;
 import com.greenart.school_management.mapper.StudentMapper;
 import com.greenart.school_management.utils.AESAlgorithm;
@@ -56,6 +57,12 @@ public class StudentService {
         
         mapper.insertStudentInfo(data);
 
+        StudentHistoryVO history = new StudentHistoryVO();
+        history.setSih_type("new");
+        history.setSih_si_content(data.makeAddHistoryStr());
+        history.setSih_si_seq(mapper.getRecnetAddedStudentSeq());
+        mapper.insertStudentHistory(history);
+
         resultMap.put("status", true);
         resultMap.put("message", "학생 정보가 등록되었습니다.");
 
@@ -88,6 +95,7 @@ public class StudentService {
     public StudentVO getStudentBySeq(Integer seq) {
         return mapper.getStudentBySeq(seq);
     }
+
     public Map<String, Object> updateStudenet(StudentVO data) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         mapper.updateStudentInfo(data);
@@ -95,8 +103,15 @@ public class StudentService {
         resultMap.put("status", true);
         resultMap.put("message", "학생 정보가 수정되었습니다.");
 
+        StudentHistoryVO history = new StudentHistoryVO();
+        history.setSih_type("update");
+        history.setSih_si_content(data.makeAddHistoryStr());
+        history.setSih_si_seq(data.getSi_seq());
+        mapper.insertStudentHistory(history);
+
         return resultMap;
     }
+
     public Map<String, Object> deleteStudent(Integer seq) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         if(mapper.isExistStudent(seq) == 0) {
@@ -108,6 +123,12 @@ public class StudentService {
             mapper.deleteStudentInfo(seq);
             resultMap.put("status", true);
             resultMap.put("message", "학생 정보가 삭제되었습니다.");
+
+            StudentHistoryVO history = new StudentHistoryVO();
+            history.setSih_type("delete");
+            history.setSih_si_seq(seq);
+            mapper.insertStudentHistory(history);
+
             return resultMap;
         }
     }

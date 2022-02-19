@@ -17,6 +17,7 @@ public class TeacherVO {
     private String ti_phone_num;
     private String ti_email;
     private Integer ti_status;
+    private String ti_img_url;
 
     private String department_name;
 

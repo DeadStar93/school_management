@@ -69,3 +69,5 @@ position: absolute; right: 10; top: 9px; background-color: transparent; color: #
 
 .btn_area #cancel {background-color:rgb(255,194,194);}
 .btn_area #cancel:hover {background-color:rgb(255,83,83);}
+
+.profile_img {width: 30px; height: 30px; background-repeat: none; background-size: 100%; background-position: center; border-radius: 50%;}

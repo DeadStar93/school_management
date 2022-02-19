@@ -2,6 +2,7 @@ package com.greenart.school_management.mapper;
 
 import java.util.List;
 
+import com.greenart.school_management.data.StudentHistoryVO;
 import com.greenart.school_management.data.StudentVO;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -19,5 +20,6 @@ public interface StudentMapper {
     public void updateStudentInfo(StudentVO data);
     public StudentVO getStudentBySeq(Integer seq);
     
-
+    public void insertStudentHistory(StudentHistoryVO data);
+    public Integer getRecnetAddedStudentSeq();
 }
